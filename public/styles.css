@@ -1,0 +1,155 @@
+:root {
+  --panel-bg: #0f172a;
+  --panel-fg: #e2e8f0;
+  --accent: #22c55e;
+  --accent-2: #3b82f6;
+  --muted: #64748b;
+  --danger: #ef4444;
+  --ghost: #1f2937;
+  --grid1-bg: #1f7a3a;
+  --grid2-bg: #0b132b;
+  --wall: #0b0f1a;
+  --path: #3b82f6;
+  --current: #ef4444;
+  --checkpoint: #f59e0b;
+  --treasure: #f97316;
+  --door: #8b5cf6;
+  --exit: #22c55e;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Helvetica, Arial, Apple Color Emoji, Segoe UI Emoji;
+  background: #0b0f1a;
+  color: var(--panel-fg);
+}
+
+.layoutContainer {
+  display: grid;
+  grid-template-columns: 360px 1fr;
+  min-height: 100vh;
+}
+
+.controlPanel {
+  padding: 20px;
+  background: var(--panel-bg);
+  border-right: 1px solid #111827;
+}
+
+.controlPanel h1 {
+  margin: 0 0 16px 0;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.statusRow {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.statusBlock {
+  background: #0b1020;
+  border: 1px solid #1f2937;
+  padding: 10px;
+  border-radius: 8px;
+}
+
+.statusLabel {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.statusValue {
+  font-size: 16px;
+  font-weight: 700;
+  margin-top: 6px;
+}
+
+.buttonRow {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+button {
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid #1f2937;
+  background: #111827;
+  color: var(--panel-fg);
+  cursor: pointer;
+  font-weight: 600;
+}
+
+button:hover { background: #0b1320; }
+
+button.accent {
+  background: var(--accent);
+  color: #041208;
+  border-color: #1e7a3a;
+}
+
+button.accent:hover { opacity: 0.9; }
+
+button.ghost {
+  background: var(--ghost);
+}
+
+.legendContainer {
+  margin-top: 14px;
+  background: #0b1020;
+  border: 1px solid #1f2937;
+  border-radius: 8px;
+  padding: 10px 12px;
+}
+
+.legendTitle {
+  font-size: 13px;
+  color: var(--muted);
+  margin-bottom: 6px;
+}
+
+.legendList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 8px;
+}
+
+.legendBox {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  border-radius: 3px;
+  margin-right: 8px;
+  vertical-align: middle;
+  border: 1px solid #111827;
+}
+
+.legendCurrent { background: var(--current); }
+.legendCheckpoint { background: var(--checkpoint); }
+.legendTreasure { background: var(--treasure); }
+.legendDoor { background: var(--door); }
+.legendExit { background: var(--exit); }
+.legendPath { background: var(--path); }
+
+.canvasPanel {
+  display: grid;
+  place-items: center;
+  padding: 12px;
+}
+
+#gridCanvas {
+  width: 90vmin;
+  height: 90vmin;
+  max-width: 900px;
+  max-height: 900px;
+  border: 2px solid #1f2937;
+  border-radius: 8px;
+  background: #0b0f1a;
+}

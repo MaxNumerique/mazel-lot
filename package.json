@@ -1,0 +1,22 @@
+{
+  "name": "mazel-lot",
+  "version": "1.0.0",
+  "description": "Web app A* avec deux grilles (vide et labyrinthe), et progression manuelle par points de passage.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "keywords": [
+    "astar",
+    "pathfinding",
+    "maze",
+    "grid",
+    "node",
+    "express"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.19.2"
+  }
+}

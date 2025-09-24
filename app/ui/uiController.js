@@ -62,7 +62,7 @@ export function computeNextSegmentPath(state, gridContainer, gridCanvasContext, 
   state.lastComputedPath = path;
   state.lastComputedTargetType = nextTargetInfo.type;
   renderGrid(state, gridContainer);
-  updateStatusLabels(state, domRefs);
+  updateStatusLabels(state, domRefs); 
 }
 
 // Valide le segment: avance la position, gère l'apparition de la porte, passage grille1→grille2, fin de grille2→grille1.

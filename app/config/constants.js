@@ -1,8 +1,8 @@
 export const gridTypeOneName = 'Open World';
 export const gridTypeTwoName = 'Laabyrinthe';
 
-export const gridOneSize =31;
-export const gridTwoSize = 31;
+export const gridOneSize =41;
+export const gridTwoSize = 41;
 
 export const gridOneBackgroundColor = '#1a472a';
 export const gridTwoBackgroundColor = '#1a472a';

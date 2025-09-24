@@ -9,12 +9,14 @@
   --grid1-bg: #1f7a3a;
   --grid2-bg: #0b132b;
   --wall: #0b0f1a;
-  --path: #3b82f6;
+  --path: #00d4ff;
+  --path-glow: #00a8cc;
   --current: #ef4444;
   --checkpoint: #f59e0b;
   --treasure: #f97316;
   --door: #8b5cf6;
   --exit: #22c55e;
+  --key: #fbbf24;
 }
 
 * { box-sizing: border-box; }
@@ -131,12 +133,30 @@ button.ghost {
   border: 1px solid #111827;
 }
 
+.legend-icon {
+  width: 16px;
+  height: 16px;
+  margin-right: 8px;
+  vertical-align: middle;
+}
+
+.legend-current { color: var(--current); }
+.legend-checkpoint { color: var(--checkpoint); }
+.legend-treasure { color: var(--treasure); }
+.legend-key { color: var(--key); }
+.legend-door { color: var(--exit); }
+.legend-exit { color: var(--exit); }
+
 .legendCurrent { background: var(--current); }
 .legendCheckpoint { background: var(--checkpoint); }
 .legendTreasure { background: var(--treasure); }
 .legendDoor { background: var(--door); }
 .legendExit { background: var(--exit); }
-.legendPath { background: var(--path); }
+.legendPath { 
+  background: var(--path);
+  box-shadow: 0 0 8px var(--path);
+  border-radius: 50%;
+}
 
 .canvasPanel {
   background-color: var(--panel-bg);
@@ -185,62 +205,233 @@ button.ghost {
   border: 1px solid rgba(255,255,255,0.1);
 }
 
-.grid-cell.path {
-  background: var(--path) !important;
-  box-shadow: inset 0 0 10px rgba(59, 130, 246, 0.5);
+/* Styles pour le SVG overlay du chemin */
+.path-overlay {
+  overflow: visible;
 }
 
-.current-position {
-  width: 60%;
-  height: 60%;
-  background: var(--current);
-  border-radius: 4px;
-  box-shadow: 0 0 10px rgba(239, 68, 68, 0.6);
+.path-line {
+  animation: neon-flow 2s ease-in-out infinite alternate;
+}
+
+.path-start-point {
+  animation: start-pulse 1.5s ease-in-out infinite alternate;
+}
+
+.path-end-point {
+  animation: end-pulse 1.5s ease-in-out infinite alternate;
+}
+
+/* Animations pour les traits néon */
+@keyframes neon-flow {
+  0% {
+    stroke: #00d4ff;
+    stroke-width: 3;
+    filter: drop-shadow(0 0 5px #00d4ff) drop-shadow(0 0 10px #00d4ff);
+  }
+  100% {
+    stroke: #00ffff;
+    stroke-width: 4;
+    filter: drop-shadow(0 0 8px #00ffff) drop-shadow(0 0 15px #00ffff) drop-shadow(0 0 20px #00d4ff);
+  }
+}
+
+@keyframes start-pulse {
+  0% {
+    fill: #00ff88;
+    r: 4;
+    filter: drop-shadow(0 0 5px #00ff88);
+  }
+  100% {
+    fill: #00ffaa;
+    r: 6;
+    filter: drop-shadow(0 0 10px #00ff88) drop-shadow(0 0 15px #00ff88);
+  }
+}
+
+@keyframes end-pulse {
+  0% {
+    fill: #ff4444;
+    r: 4;
+    filter: drop-shadow(0 0 5px #ff4444);
+  }
+  100% {
+    fill: #ff6666;
+    r: 6;
+    filter: drop-shadow(0 0 10px #ff4444) drop-shadow(0 0 15px #ff4444);
+  }
+}
+
+/* Styles pour les icônes Iconify */
+.current-position-icon {
+  width: 70%;
+  height: 70%;
+  color: var(--current);
+  filter: drop-shadow(0 0 8px rgba(239, 68, 68, 0.6));
   z-index: 10;
 }
 
-.checkpoint {
+.checkpoint-icon {
   width: 80%;
   height: 80%;
-  background: var(--checkpoint);
+  color: var(--checkpoint);
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.4));
+  z-index: 5;
+}
+
+.treasure-icon {
+  width: 85%;
+  height: 85%;
+  color: var(--treasure);
+  filter: drop-shadow(0 2px 6px rgba(0,0,0,0.4));
+  z-index: 5;
+}
+
+.key-icon {
+  width: 75%;
+  height: 75%;
+  color: var(--key);
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.4));
+  z-index: 5;
+}
+
+.exit-icon {
+  width: 85%;
+  height: 85%;
+  color: var(--exit);
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.4));
+  z-index: 5;
+}
+
+/* Styles pour les fallbacks */
+.icon-fallback {
+  width: 70%;
+  height: 70%;
   border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: bold;
-  color: #000;
   font-size: 0.8em;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
   z-index: 5;
 }
 
-.treasure {
-  font-size: 1.2em;
-  z-index: 5;
-  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+.current-position-icon.icon-fallback {
+  background: var(--current);
+  color: white;
 }
 
-.door {
-  font-size: 1.2em;
-  z-index: 5;
-  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+.checkpoint-icon.icon-fallback {
+  background: var(--checkpoint);
+  color: black;
 }
 
-.exit {
-  font-size: 1.2em;
-  z-index: 5;
-  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+.treasure-icon.icon-fallback {
+  background: var(--treasure);
+  color: white;
+  font-size: 1em;
+}
+
+.key-icon.icon-fallback {
+  background: var(--key);
+  color: black;
+  font-size: 1em;
+}
+
+.exit-icon.icon-fallback {
+  background: var(--exit);
+  color: white;
+  font-size: 1em;
 }
 
 /* Responsive pour différentes tailles de grille */
-.grid-container[style*="--grid-size: 10"] .grid-cell {
-  font-size: 1.2em;
+.grid-container[style*="--grid-size: 10"] .grid-cell iconify-icon,
+.grid-container[style*="--grid-size: 10"] .grid-cell .icon-fallback {
+  width: 90%;
+  height: 90%;
 }
 
-.grid-container[style*="--grid-size: 20"] .grid-cell {
-  font-size: 0.8em;
+.grid-container[style*="--grid-size: 20"] .grid-cell iconify-icon,
+.grid-container[style*="--grid-size: 20"] .grid-cell .icon-fallback {
+  width: 75%;
+  height: 75%;
 }
 
-.grid-container[style*="--grid-size: 30"] .grid-cell {
-  font-size: 0.6em;
+.grid-container[style*="--grid-size: 30"] .grid-cell iconify-icon,
+.grid-container[style*="--grid-size: 30"] .grid-cell .icon-fallback {
+  width: 65%;
+  height: 65%;
+}
+
+.grid-container[style*="--grid-size: 40"] .grid-cell iconify-icon,
+.grid-container[style*="--grid-size: 40"] .grid-cell .icon-fallback {
+  width: 60%;
+  height: 60%;
+}
+
+/* Responsive pour les traits SVG */
+.grid-container[style*="--grid-size: 10"] .path-line {
+  stroke-width: 4;
+}
+
+.grid-container[style*="--grid-size: 20"] .path-line {
+  stroke-width: 3;
+}
+
+.grid-container[style*="--grid-size: 30"] .path-line {
+  stroke-width: 2;
+}
+
+.grid-container[style*="--grid-size: 40"] .path-line {
+  stroke-width: 1.5;
+}
+
+/* Animations pour les icônes */
+.current-position-icon {
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    filter: drop-shadow(0 0 8px rgba(239, 68, 68, 0.6));
+  }
+  50% {
+    filter: drop-shadow(0 0 12px rgba(239, 68, 68, 0.9));
+  }
+}
+
+.treasure-icon {
+  animation: treasure-glow 3s ease-in-out infinite;
+}
+
+@keyframes treasure-glow {
+  0%, 100% {
+    filter: drop-shadow(0 2px 6px rgba(0,0,0,0.4));
+  }
+  50% {
+    filter: drop-shadow(0 2px 8px rgba(249, 115, 22, 0.6));
+  }
+}
+
+/* Animations pour les fallbacks */
+.current-position-icon.icon-fallback {
+  animation: pulse-fallback 2s infinite;
+}
+
+@keyframes pulse-fallback {
+  0%, 100% {
+    box-shadow: 0 0 8px rgba(239, 68, 68, 0.6);
+  }
+  50% {
+    box-shadow: 0 0 12px rgba(239, 68, 68, 0.9);
+  }
+}
+
+.treasure-icon.icon-fallback {
+  animation: treasure-glow-fallback 3s ease-in-out infinite;
+}
+
+@keyframes treasure-glow-fallback {
+  0%, 100% {
+    box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+  }
+  50% {
+    box-shadow: 0 2px 8px rgba(249, 115, 22, 0.6);
+  }
 }

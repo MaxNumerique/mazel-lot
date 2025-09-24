@@ -139,6 +139,7 @@ button.ghost {
 .legendPath { background: var(--path); }
 
 .canvasPanel {
+  background-color: var(--panel-bg);
   display: grid;
   place-items: center;
   padding: 12px;
@@ -147,9 +148,99 @@ button.ghost {
 #gridCanvas {
   width: 90vmin;
   height: 90vmin;
-  max-width: 900px;
-  max-height: 900px;
+  max-width: 100%;
+  max-height: 90vh;
   border: 2px solid #1f2937;
   border-radius: 8px;
   background: #0b0f1a;
+}
+
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(var(--grid-size), 1fr);
+  grid-template-rows: repeat(var(--grid-size), 1fr);
+  gap: 1px;
+  background: var(--grid-bg);
+  width: 90vmin;
+  height: 90vmin;
+  border: 2px solid #1f2937;
+  position: relative;
+}
+
+.grid-cell {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 0;
+  transition: all 0.2s ease;
+}
+
+.grid-cell.walkable {
+  background: var(--grid1-bg);
+}
+
+.grid-cell.wall {
+  background: var(--wall);
+  border: 1px solid rgba(255,255,255,0.1);
+}
+
+.grid-cell.path {
+  background: var(--path) !important;
+  box-shadow: inset 0 0 10px rgba(59, 130, 246, 0.5);
+}
+
+.current-position {
+  width: 60%;
+  height: 60%;
+  background: var(--current);
+  border-radius: 4px;
+  box-shadow: 0 0 10px rgba(239, 68, 68, 0.6);
+  z-index: 10;
+}
+
+.checkpoint {
+  width: 80%;
+  height: 80%;
+  background: var(--checkpoint);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  color: #000;
+  font-size: 0.8em;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+  z-index: 5;
+}
+
+.treasure {
+  font-size: 1.2em;
+  z-index: 5;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+}
+
+.door {
+  font-size: 1.2em;
+  z-index: 5;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+}
+
+.exit {
+  font-size: 1.2em;
+  z-index: 5;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+}
+
+/* Responsive pour différentes tailles de grille */
+.grid-container[style*="--grid-size: 10"] .grid-cell {
+  font-size: 1.2em;
+}
+
+.grid-container[style*="--grid-size: 20"] .grid-cell {
+  font-size: 0.8em;
+}
+
+.grid-container[style*="--grid-size: 30"] .grid-cell {
+  font-size: 0.6em;
 }

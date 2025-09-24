@@ -1,9 +1,11 @@
 import { createInitialState, initializeGridOne } from './model/state.js';
-import { drawGrid } from './render/canvasRenderer.js';
+import { createGridContainer, renderGrid } from './render/htmlRenderer.js';
 import { updateStatusLabels, computeNextSegmentPath, confirmSegmentAndAdvance, resetAll } from './ui/uiController.js';
 
-const gridCanvas = document.getElementById('gridCanvas');
-const gridCanvasContext = gridCanvas.getContext('2d');
+const gridContainer = document.getElementById('gridContainer') || createGridContainer();
+if (!document.getElementById('gridContainer')) {
+  document.querySelector('.canvasPanel').appendChild(gridContainer);
+}
 
 const computeSegmentButton = document.getElementById('computeSegmentButton');
 const confirmSegmentButton = document.getElementById('confirmSegmentButton');
@@ -17,15 +19,15 @@ const domRefs = { gridTypeLabel, stepLabel, targetLabel };
 
 const state = createInitialState();
 initializeGridOne(state);
-drawGrid(state, gridCanvas, gridCanvasContext);
+renderGrid(state, gridContainer);
 updateStatusLabels(state, domRefs);
 
 computeSegmentButton.addEventListener('click', () => {
-  computeNextSegmentPath(state, gridCanvas, gridCanvasContext, domRefs);
+  computeNextSegmentPath(state, gridContainer, null, domRefs);
 });
 confirmSegmentButton.addEventListener('click', () => {
-  confirmSegmentAndAdvance(state, gridCanvas, gridCanvasContext, domRefs);
+  confirmSegmentAndAdvance(state, gridContainer, null, domRefs);
 });
 resetAllButton.addEventListener('click', () => {
-  resetAll(state, gridCanvas, gridCanvasContext, domRefs);
+  resetAll(state, gridContainer, null, domRefs);
 });

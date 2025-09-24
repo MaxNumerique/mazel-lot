@@ -1,7 +1,7 @@
 import { gridTypeOneName, gridTypeTwoName } from '../config/constants.js';
 import { performAStarSearch } from '/algo/astar.js';
 import { initializeGridOne, initializeGridTwo, pickDoorPosition } from '../model/state.js';
-import { drawGrid } from '../render/canvasRenderer.js';
+import { renderGrid } from '../render/htmlRenderer.js';
 
 // Cible suivante: check-points puis porte (grille 1), check-points puis sortie (grille 2).
 export function getNextTargetAndType(state) {
@@ -52,8 +52,8 @@ export function updateStatusLabels(state, domRefs) {
   }
 }
 
-// Calcule le segment A* vers la cible courante, stocke le chemin et rafraîchit l’affichage.
-export function computeNextSegmentPath(state, gridCanvas, gridCanvasContext, domRefs) {
+// Calcule le segment A* vers la cible courante, stocke le chemin et rafraîchit l'affichage.
+export function computeNextSegmentPath(state, gridContainer, gridCanvasContext, domRefs) {
   const nextTargetInfo = getNextTargetAndType(state);
   if (!nextTargetInfo.target) {
     return;
@@ -61,12 +61,12 @@ export function computeNextSegmentPath(state, gridCanvas, gridCanvasContext, dom
   const path = performAStarSearch(state.walkableMatrix, state.currentPosition, nextTargetInfo.target);
   state.lastComputedPath = path;
   state.lastComputedTargetType = nextTargetInfo.type;
-  drawGrid(state, gridCanvas, gridCanvasContext);
+  renderGrid(state, gridContainer);
   updateStatusLabels(state, domRefs);
 }
 
-// Valide le segment: avance la position, gère l’apparition de la porte, passage grille1→grille2, fin de grille2→grille1.
-export function confirmSegmentAndAdvance(state, gridCanvas, gridCanvasContext, domRefs) {
+// Valide le segment: avance la position, gère l'apparition de la porte, passage grille1→grille2, fin de grille2→grille1.
+export function confirmSegmentAndAdvance(state, gridContainer, gridCanvasContext, domRefs) {
   if (!state.lastComputedPath || state.lastComputedPath.length === 0) {
     return;
   }
@@ -97,13 +97,13 @@ export function confirmSegmentAndAdvance(state, gridCanvas, gridCanvasContext, d
 
   state.lastComputedPath = [];
   state.lastComputedTargetType = null;
-  drawGrid(state, gridCanvas, gridCanvasContext);
+  renderGrid(state, gridContainer);
   updateStatusLabels(state, domRefs);
 }
 
-// Réinitialise l’ensemble de la simulation sur la grille 1.
-export function resetAll(state, gridCanvas, gridCanvasContext, domRefs) {
+// Réinitialise l'ensemble de la simulation sur la grille 1.
+export function resetAll(state, gridContainer, gridCanvasContext, domRefs) {
   initializeGridOne(state);
-  drawGrid(state, gridCanvas, gridCanvasContext);
+  renderGrid(state, gridContainer);
   updateStatusLabels(state, domRefs);
 }

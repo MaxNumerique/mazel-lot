@@ -1,14 +1,14 @@
 export const gridTypeOneName = 'Open World';
 export const gridTypeTwoName = 'Laabyrinthe';
 
-export const gridOneSize = 41;
-export const gridTwoSize = 41;
+export const gridOneSize =31;
+export const gridTwoSize = 31;
 
-export const gridOneBackgroundColor = '#0b132b';
-export const gridTwoBackgroundColor = '#0b132b';
+export const gridOneBackgroundColor = '#1a472a';
+export const gridTwoBackgroundColor = '#1a472a';
 
 export const wallCellColor = '#0b0f1a';
-export const openCellColor = '#0b132b';
+export const openCellColor = '#1a472a';
 export const pathColor = '#3b82f6';
 export const currentPositionColor = '#ef4444';
 export const checkpointColor = '#f59e0b';

@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Maze'Lott - Quête des Gueux</title>
+    <link rel="stylesheet" href="./style.css" />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    />
+    <script type="module" src="./script.js" defer></script>
+    <script
+      src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+      defer
+    ></script>
+  </head>
+  <body>
+    <div id="intro-screen" class="intro-screen">
+      <div class="intro-content">
+        <h1>🎻 La Quête des Gueux 🎻</h1>
+        <p>
+          "Oyé, oyé, tas de croûtons ambulants !<br />
+          Le roi Arthur, trop occupé à bâiller entre deux banquets,<br />
+          vous délègue la périlleuse mission d’aller chercher SON trésor,<br />
+          bien entendu pour SA gloire (et sûrement pas pour vos poches
+          trouées).<br /><br />
+          Armés de votre intelligence… enfin, de ce qu’il en reste,<br />
+          vous voilà jetés dans un labyrinthe si tortueux<br />
+          qu’il ferait passer les impôts royaux pour un passe-temps
+          récréatif.<br /><br />
+          Si par miracle vous chopez le magot… ramenez-le donc au roi Arthur.<br />
+          Sinon, vous finirez dans les latrines, avec les rats et les poux."
+        </p>
+        <button class="btn" onclick="startGame()">
+          Commencer la Quête de Bouseux
+        </button>
+      </div>
+    </div>
+    <div id="map" style="height: 320px; width: 100%; margin: 12px 0"></div>
+    <div class="header">
+      <h1>🏰 Maze'Lott - Quête des Gueux 🏰</h1>
+      <p>"Quête de bouseux pour un trésor de pouilleux !"</p>
+    </div>
+    <div class="controls">
+      <div class="size-controls">
+        <label>Largeur:</label>
+        <input type="number" id="width" value="25" min="10" max="50" />
+        <label>Hauteur:</label>
+        <input type="number" id="height" value="25" min="10" max="50" />
+      </div>
+      <button class="btn" onclick="generateMaze()">
+        🏗️ Nouveau LabyMaze'Lott
+      </button>
+      <button class="btn" onclick="showOptimalPath()">
+        🗺️ Chemin des Gueux
+      </button>
+      <button class="btn" onclick="resetGame()">
+        🔄 Recommencer ! C'est le bordel, chef !
+      </button>
+    </div>
+    <div class="game-container">
+      <div class="maze-container">
+        <div id="maze" class="maze"></div>
+      </div>
+      <div class="info-panel">
+        <h3>⚔️ Grimoire du Bouseux ⚔️</h3>
+        <div class="legend">
+          <div class="legend-item">
+            <div class="legend-color wall"></div>
+            <span>Murs crasseux</span>
+          </div>
+          <div class="legend-item">
+            <div class="legend-color path"></div>
+            <span>Chemins boueux</span>
+          </div>
+          <div class="legend-item">
+            <div class="legend-color start">🏰</div>
+            <span>Taudis de départ</span>
+          </div>
+          <div class="legend-item">
+            <div class="legend-color exit">🚪</div>
+            <span>Sortie vers la liberté</span>
+          </div>
+          <div class="legend-item">
+            <div class="legend-color path">💰</div>
+            <span>Butin planqué (invisible)</span>
+          </div>
+          <div class="legend-item">
+            <div class="legend-color path">🗺️</div>
+            <span>Indices de bouseux (invisibles)</span>
+          </div>
+          <div class="legend-item">
+            <div class="legend-color player">👑</div>
+            <span>Votre misérable personne</span>
+          </div>
+        </div>
+        <div class="controls-info">
+          <h4>🎮 Grimoire du Bouseux</h4>
+          <p>⌨️ Flèches : Traîner vos guêtres</p>
+          <p>🖱️ Clic : Déplacer votre carcasse</p>
+          <p>🗺️ 5 indices de bouseux vous guident</p>
+          <p>🎯 But : Choper le butin et se barrer !</p>
+        </div>
+        <div class="stats" id="stats">
+          <div><strong>🏰 Quête des Pouilleux en cours...</strong></div>
+          <div>📍 Position: <span id="position">Taudis</span></div>
+          <div>👣 Pas du cul-terreux: <span id="steps">0</span></div>
+          <div>🗺️ Waypoints trouvés: <span id="waypoints">0</span></div>
+          <div>💰 Butin: <span id="treasure-status">Que dalle !</span></div>
+          <div>🏆 État: <span id="status">En galère</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="game-over" id="gameOver">
+      <h2>🎉 Bravo Bouseux ! 🎉</h2>
+      <p>T'as chopé le butin et t'es sorti de ce bourbier !</p>
+      <p>Pas de la carcasse: <span id="final-steps"></span></p>
+      <p>Waypoints découverts: <span id="final-waypoints"></span>/5</p>
+      <button class="btn" onclick="closeGameOver()">Continuer à Glander</button>
+    </div>
+  </body>
+</html>

@@ -18,9 +18,15 @@ const targetLabel = document.getElementById('targetLabel');
 const domRefs = { gridTypeLabel, stepLabel, targetLabel };
 
 const state = createInitialState();
-initializeGridOne(state);
-renderGrid(state, gridContainer);
-updateStatusLabels(state, domRefs);
+
+// Initialisation asynchrone
+async function initializeApp() {
+  await initializeGridOne(state);
+  renderGrid(state, gridContainer);
+  updateStatusLabels(state, domRefs);
+}
+
+initializeApp();
 
 computeSegmentButton.addEventListener('click', () => {
   computeNextSegmentPath(state, gridContainer, null, domRefs);
@@ -28,6 +34,8 @@ computeSegmentButton.addEventListener('click', () => {
 confirmSegmentButton.addEventListener('click', () => {
   confirmSegmentAndAdvance(state, gridContainer, null, domRefs);
 });
-resetAllButton.addEventListener('click', () => {
-  resetAll(state, gridContainer, null, domRefs);
+resetAllButton.addEventListener('click', async () => { // Ajouter async
+  await resetAll(state, gridContainer, null, domRefs); // Ajouter await
 });
+
+window.gameState = state;

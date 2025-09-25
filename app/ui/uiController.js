@@ -111,8 +111,24 @@ export function confirmSegmentAndAdvance(state, gridContainer, gridCanvasContext
 }
 
 // Réinitialise l'ensemble de la simulation sur la grille 1.
-export function resetAll(state, gridContainer, gridCanvasContext, domRefs) {
-  initializeGridOne(state);
+export async function resetAll(state, gridContainer, gridCanvasContext, domRefs) {
+  await initializeGridOne(state); // Ajouter await
   renderGrid(state, gridContainer);
   updateStatusLabels(state, domRefs);
 }
+
+// Modifier la fonction d'initialisation pour être asynchrone
+export async function switchToGridOne() {
+  await initializeGridOne(window.gameState);
+  updateGridTypeLabel();
+  renderGrid();
+}
+
+document.addEventListener('DOMContentLoaded', async function() {
+  // Attendre que main.js ait initialisé gameState
+  if (window.gameState) {
+    await initializeGridOne(window.gameState);
+    updateGridTypeLabel();
+    renderGrid();
+  }
+});

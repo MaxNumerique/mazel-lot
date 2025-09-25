@@ -193,13 +193,39 @@ button.ghost {
   background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
-  border: 3px solid #8b5a2b;
+  /* border: 3px solid #8b5a2b; */
   border-radius: 12px;
-  box-shadow: 0 0 20px rgba(139, 90, 43, 0.3);
+  /* box-shadow: 0 0 20px rgba(139, 90, 43, 0.3); */
   background-color: #2d4a3a;
-  /* Ajustement de la taille pour mieux voir l'image complète */
-  width: min(90vw, 90vh * 16/9); /* Largeur adaptée au ratio 16:9 */
-  height: min(90vh, 90vw * 9/16); /* Hauteur adaptée au ratio 16:9 */
+  /* Optimisation pour petits écrans */
+  width: min(90vw, 80vh * 16/9); /* Plus large sur petits écrans */
+  height: min(80vh, 95vw * 9/16); /* Hauteur adaptée */
+  max-width: 1200px; /* Limite maximale pour grands écrans */
+  max-height: 670px; /* Limite maximale pour grands écrans */
+  /* Centrage pour tous les écrans */
+  margin: 0 auto;
+}
+
+/* Ajustements spécifiques pour très petits écrans */
+@media (max-width: 768px) {
+  .grid-container.kaamelott-background {
+    width: 98vw;
+    height: calc(98vw * 9/16);
+    max-width: none;
+    max-height: 70vh;
+    border-width: 2px;
+    border-radius: 8px;
+  }
+}
+
+/* Ajustements pour écrans moyens */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .grid-container.kaamelott-background {
+    width: min(90vw, 75vh * 16/9);
+    height: min(75vh, 90vw * 9/16);
+    max-width: 700px;
+    max-height: 394px;
+  }
 }
 
 /* Cellules encore plus transparentes pour mieux voir la carte */

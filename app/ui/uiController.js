@@ -17,8 +17,17 @@ export function getNextTargetAndType(state) {
 
 // Met à jour labels (grille, étape sur 3/4, cible) selon l’état courant.
 export function updateStatusLabels(state, domRefs) {
-  domRefs.gridTypeLabel.textContent = state.currentGridType === 'grid1' ? gridTypeOneName : gridTypeTwoName;
-
+  const { gridTypeLabel, stepLabel, targetLabel } = domRefs;
+  
+  // Mise à jour du type de grille avec style spécial pour Kaamelott
+  if (state.currentGridType === 'grid1') {
+    gridTypeLabel.textContent = 'Kaamelott';
+    gridTypeLabel.classList.add('status-kaamelott');
+  } else {
+    gridTypeLabel.textContent = 'Labyrinthe';
+    gridTypeLabel.classList.remove('status-kaamelott');
+  }
+  
   const totalSegments =
     state.currentGridType === 'grid1'
       ? (state.doorPosition ? 4 : 3)

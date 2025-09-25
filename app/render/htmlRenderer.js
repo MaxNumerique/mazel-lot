@@ -28,6 +28,13 @@ export function renderGrid(state, container) {
     state.currentGridType === 'grid1' ? gridOneBackgroundColor : gridTwoBackgroundColor
   );
   
+  // Ajouter la classe pour l'arrière-plan Kaamelott sur la grille 1
+  if (state.currentGridType === 'grid1') {
+    container.classList.add('kaamelott-background');
+  } else {
+    container.classList.remove('kaamelott-background');
+  }
+  
   // Créer les cellules
   for (let y = 0; y < gridSize; y++) {
     for (let x = 0; x < gridSize; x++) {

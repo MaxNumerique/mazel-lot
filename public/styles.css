@@ -187,18 +187,49 @@ button.ghost {
   position: relative;
 }
 
+/* Ajustement spécial pour la grille Kaamelott */
+.grid-container.kaamelott-background {
+  background-image: url('/images/Kaamelott.png');
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  border: 3px solid #8b5a2b;
+  border-radius: 12px;
+  box-shadow: 0 0 20px rgba(139, 90, 43, 0.3);
+  background-color: #2d4a3a;
+  /* Ajustement de la taille pour mieux voir l'image complète */
+  width: min(90vw, 90vh * 16/9); /* Largeur adaptée au ratio 16:9 */
+  height: min(90vh, 90vw * 9/16); /* Hauteur adaptée au ratio 16:9 */
+}
+
+/* Cellules encore plus transparentes pour mieux voir la carte */
+.grid-container.kaamelott-background .grid-cell.walkable {
+  background: rgba(31, 122, 58, 0.05);
+  /* Opacité très réduite pour une meilleure visibilité de la carte */
+}
+
 .grid-cell {
   position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
   min-height: 0;
-  transition: all 0.2s ease;
+  /* Suppression de la transition pour améliorer les performances */
 }
 
 .grid-cell.walkable {
   background: var(--grid1-bg);
 }
+
+/* Cellules transparentes pour la grille Kaamelott */
+.grid-container.kaamelott-background .grid-cell.walkable {
+  background: rgba(31, 122, 58, 0.2);
+  /* Réduction de l'opacité et suppression du backdrop-filter pour de meilleures performances */
+  border: none;
+}
+
+/* Suppression complète de l'effet hover pour éviter les lags */
+/* .grid-container.kaamelott-background .grid-cell.walkable:hover - SUPPRIMÉ */
 
 .grid-cell.wall {
   background: var(--wall);
@@ -340,7 +371,18 @@ button.ghost {
   font-size: 1em;
 }
 
-/* Responsive pour différentes tailles de grille */
+/* Responsive pour différentes tailles de grille - Ajout pour 24x24 */
+.grid-container[style*="--grid-size: 24"] .grid-cell iconify-icon,
+.grid-container[style*="--grid-size: 24"] .grid-cell .icon-fallback {
+  width: 70%;
+  height: 70%;
+}
+
+/* Responsive pour les traits SVG - Ajout pour 24x24 */
+.grid-container[style*="--grid-size: 24"] .path-line {
+  stroke-width: 2.5;
+}
+
 .grid-container[style*="--grid-size: 10"] .grid-cell iconify-icon,
 .grid-container[style*="--grid-size: 10"] .grid-cell .icon-fallback {
   width: 90%;
@@ -434,4 +476,72 @@ button.ghost {
   50% {
     box-shadow: 0 2px 8px rgba(249, 115, 22, 0.6);
   }
+}
+
+/* Amélioration des icônes pour la grille Kaamelott - Version optimisée */
+.grid-container.kaamelott-background .current-position-icon {
+  filter: drop-shadow(0 0 8px rgba(239, 68, 68, 0.8));
+  color: #ff6b6b;
+}
+
+.grid-container.kaamelott-background .checkpoint-icon {
+  filter: drop-shadow(0 0 6px rgba(245, 158, 11, 0.8));
+  color: #fbbf24;
+}
+
+.grid-container.kaamelott-background .treasure-icon {
+  filter: drop-shadow(0 0 8px rgba(249, 115, 22, 0.9));
+  color: #f59e0b;
+}
+
+.grid-container.kaamelott-background .key-icon {
+  filter: drop-shadow(0 0 6px rgba(251, 191, 36, 0.8));
+  color: #fcd34d;
+}
+
+.grid-container.kaamelott-background .exit-icon {
+  filter: drop-shadow(0 0 8px rgba(34, 197, 94, 0.8));
+  color: #10b981;
+}
+
+/* Amélioration du chemin pour la grille Kaamelott - Version optimisée */
+.grid-container.kaamelott-background .path-line {
+  stroke: #00ffff;
+  stroke-width: 4;
+  filter: drop-shadow(0 0 8px #00ffff);
+}
+
+.grid-container.kaamelott-background .path-start-point {
+  fill: #00ff88;
+  filter: drop-shadow(0 0 8px #00ff88);
+}
+
+.grid-container.kaamelott-background .path-end-point {
+  fill: #ff4444;
+  filter: drop-shadow(0 0 8px #ff4444);
+}
+
+/* Responsive pour différentes tailles de grille */
+.grid-container[style*="--grid-size: 10"] .grid-cell iconify-icon,
+.grid-container[style*="--grid-size: 10"] .grid-cell .icon-fallback {
+  width: 90%;
+  height: 90%;
+}
+
+.grid-container[style*="--grid-size: 20"] .grid-cell iconify-icon,
+.grid-container[style*="--grid-size: 20"] .grid-cell .icon-fallback {
+  width: 75%;
+  height: 75%;
+}
+
+.grid-container[style*="--grid-size: 30"] .grid-cell iconify-icon,
+.grid-container[style*="--grid-size: 30"] .grid-cell .icon-fallback {
+  width: 65%;
+  height: 65%;
+}
+
+.grid-container[style*="--grid-size: 40"] .grid-cell iconify-icon,
+.grid-container[style*="--grid-size: 40"] .grid-cell .icon-fallback {
+  width: 60%;
+  height: 60%;
 }

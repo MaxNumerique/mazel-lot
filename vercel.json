@@ -1,16 +1,4 @@
 {
-  "rewrites": [
-    {
-      "source": "/app/(.*)",
-      "destination": "/app/$1"
-    },
-    {
-      "source": "/algo/(.*)",
-      "destination": "/algo/$1"
-    },
-    {
-      "source": "/(.*)",
-      "destination": "/public/$1"
-    }
-  ]
+  "cleanUrls": true,
+  "trailingSlash": false
 }

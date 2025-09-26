@@ -154,8 +154,8 @@ button.ghost {
 .legendDoor { background: var(--door); }
 .legendExit { background: var(--exit); }
 .legendPath { 
-  background: var(--path);
-  box-shadow: 0 0 8px var(--path);
+  background: #00d4ff;
+  box-shadow: 0 0 8px #00d4ff;
   border-radius: 50%;
 }
 

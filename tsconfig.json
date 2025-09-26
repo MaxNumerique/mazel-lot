@@ -1,0 +1,27 @@
+{
+    "compilerOptions": {
+        // Sortie et organisation
+        "outDir": "./",
+        "rootDir": "./",
+
+        // Cible ES moderne (navigateurs récents)
+        "target": "es6",
+        "module": "es6",
+        "moduleResolution": "node",
+
+        // Options utiles
+        "strict": true,
+        "skipLibCheck": true,
+
+        // Génération de fichiers utiles
+        "sourceMap": true,
+        "declaration": false,
+        "declarationMap": false,
+
+        // Meilleure gestion des imports
+        "verbatimModuleSyntax": true,
+        "isolatedModules": true
+    },
+    "include": ["./**/*.ts"],
+    "exclude": ["node_modules"]
+}

@@ -1,46 +1,20 @@
-import { Outdoor } from "./Outdoor";
+import { Outdoor } from "./Outdoor.js";
 
-// -------------------------
-// 1️⃣ Création du labyrinthe
-// -------------------------
-const outdoor = new Outdoor(25, 25);
-outdoor.generateMaze(); // Génère le labyrinthe
-
-// -------------------------
-// 2️⃣ Récupération du canvas
-// -------------------------
+// Récupère le canvas HTML
 const canvas = document.getElementById("mazeCanvas") as HTMLCanvasElement;
-const ctx = canvas.getContext("2d");
+// Récupère le contexte 2D pour dessiner
+const ctx = canvas.getContext("2d")!;
 
-if (!ctx) throw new Error("Canvas non supporté");
-
+// Crée un labyrinthe de 35x35 cellules
+const outdoor = new Outdoor(35, 35);
+// Calcul de la taille de chaque cellule pour que le labyrinthe remplisse le canvas
 const cellSize = canvas.width / outdoor.width;
 
-// -------------------------
-// 3️⃣ Parcours et affichage
-// -------------------------
-for (let y = 0; y < outdoor.height; y++) {
-  let rowStr = ""; // pour le debug console
+// Fonction principale asynchrone pour la génération et l'affichage
+(async () => {
+    // Génération animée du labyrinthe (DFS)
+    await outdoor.generateMazeAnimated(ctx, cellSize, 20);
 
-  for (let x = 0; x < outdoor.width; x++) {
-    const cell = outdoor.grid[y][x];
-
-    // Console ASCII : # pour mur, . pour passage
-    if (cell.isWall) rowStr += "#";
-    else if (cell.isStart) rowStr += "S";
-    else if (cell.isEnd) rowStr += "E";
-    else if (cell.isCheckpoint) rowStr += "C";
-    else rowStr += ".";
-
-    // Canvas : couleurs selon type de cellule
-    if (cell.isWall) ctx.fillStyle = "black";
-    else if (cell.isStart) ctx.fillStyle = "green";
-    else if (cell.isEnd) ctx.fillStyle = "red";
-    else if (cell.isCheckpoint) ctx.fillStyle = "gold";
-    else ctx.fillStyle = "white";
-
-    ctx.fillRect(x * cellSize, y * cellSize, cellSize, cellSize);
-  }
-
-  console.log(rowStr); // affiche la ligne dans la console
-}
+    // Exploration animée du BFS pour trouver le chemin le plus court et le mettre en surbrillance
+    await outdoor.visualizeBFS(ctx, cellSize, 30);
+})();

@@ -1,30 +1,26 @@
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 import { Outdoor } from "./Outdoor.js";
-const outdoor = new Outdoor(25, 25);
-outdoor.generateMaze(); // Génère le labyrinthe
-
+// Récupère le canvas HTML
 const canvas = document.getElementById("mazeCanvas");
+// Récupère le contexte 2D pour dessiner
 const ctx = canvas.getContext("2d");
-if (!ctx) throw new Error("Canvas non supporté");
+// Crée un labyrinthe de 35x35 cellules
+const outdoor = new Outdoor(35, 35);
+// Calcul de la taille de chaque cellule pour que le labyrinthe remplisse le canvas
 const cellSize = canvas.width / outdoor.width;
-for (let y = 0; y < outdoor.height; y++) {
-  let rowStr = ""; // pour le debug console
-  for (let x = 0; x < outdoor.width; x++) {
-    const cell = outdoor.grid[y][x];
-
-    //Généraiton côté console
-    if (cell.isWall) rowStr += "#";
-    else if (cell.isStart) rowStr += "S";
-    else if (cell.isEnd) rowStr += "E";
-    else if (cell.isCheckpoint) rowStr += "C";
-    else rowStr += ".";
-
-    //Affichage sur le canvas
-    if (cell.isWall) ctx.fillStyle = "black";
-    else if (cell.isStart) ctx.fillStyle = "green";
-    else if (cell.isEnd) ctx.fillStyle = "red";
-    else if (cell.isCheckpoint) ctx.fillStyle = "gold";
-    else ctx.fillStyle = "white";
-    ctx.fillRect(x * cellSize, y * cellSize, cellSize, cellSize);
-  }
-  console.log(rowStr); // affiche la ligne dans la console
-}
+// Fonction principale asynchrone pour la génération et l'affichage
+(() => __awaiter(void 0, void 0, void 0, function* () {
+    // Génération animée du labyrinthe (DFS)
+    yield outdoor.generateMazeAnimated(ctx, cellSize, 20);
+    // Exploration animée du BFS pour trouver le chemin le plus court et le mettre en surbrillance
+    yield outdoor.visualizeBFS(ctx, cellSize, 30);
+}))();
+//# sourceMappingURL=demo.js.map

@@ -1,24 +1,13 @@
 {
-  "cleanUrls": true,
-  "trailingSlash": false,
-  "headers": [
+  "functions": {
+    "api/index.js": {
+      "maxDuration": 10
+    }
+  },
+  "rewrites": [
     {
-      "source": "/app/(.*)\\.js",
-      "headers": [
-        {
-          "key": "Content-Type",
-          "value": "application/javascript"
-        }
-      ]
-    },
-    {
-      "source": "/algo/(.*)\\.js", 
-      "headers": [
-        {
-          "key": "Content-Type",
-          "value": "application/javascript"
-        }
-      ]
+      "source": "/((?!api/).*)",
+      "destination": "/api"
     }
   ]
 }

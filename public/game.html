@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <title>Mazel-lot - Jeu</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="/styles.css" />
+  <!-- Iconify avec version plus récente et fallback -->
+  <script src="https://code.iconify.design/iconify-icon/1.0.8/iconify-icon.min.js"></script>
+</head>
+<body>
+  <div class="layoutContainer">
+    <div class="controlPanel">
+      <h1>Simulation A*</h1>
+      <div class="statusRow">
+        <div class="statusBlock">
+          <div class="statusLabel">Grille</div>
+          <div id="gridTypeLabel" class="statusValue"></div>
+        </div>
+        <div class="statusBlock">
+          <div class="statusLabel">Étape</div>
+          <div id="stepLabel" class="statusValue"></div>
+        </div>
+        <div class="statusBlock">
+          <div class="statusLabel">Cible</div>
+          <div id="targetLabel" class="statusValue"></div>
+        </div>
+      </div>
+
+      <div class="buttonRow">
+        <button id="computeSegmentButton">Calculer le segment</button>
+        <button id="confirmSegmentButton" class="accent">Valider le passage</button>
+        <button id="resetAllButton" class="ghost">Réinitialiser</button>
+      </div>
+
+      <div class="legendContainer">
+        <div class="legendTitle">Légende</div>
+        <ul class="legendList">
+          <li><iconify-icon icon="mdi:account-circle" class="legend-icon legend-current"></iconify-icon> Position actuelle</li>
+          <li><iconify-icon icon="mdi:alpha-a-circle" class="legend-icon legend-checkpoint"></iconify-icon> Point de passage</li>
+          <li><iconify-icon icon="mdi:treasure-chest" class="legend-icon legend-treasure"></iconify-icon> Trésor</li>
+          <li><iconify-icon icon="mdi:key" class="legend-icon legend-key"></iconify-icon> Clé</li>
+          <li><iconify-icon icon="mdi:door-open" class="legend-icon legend-door"></iconify-icon> Sortie</li>
+          <li><span class="legendBox legendPath"></span> Tracé A*</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="canvasPanel">
+      <div id="gridContainer" class="grid-container"></div>
+    </div>
+  </div>
+
+  <script type="module" src="/app/main.js"></script>
+</body>
+</html>

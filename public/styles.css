@@ -1,16 +1,16 @@
 :root {
-  --panel-bg: #0f172a;
-  --panel-fg: #e2e8f0;
-  --accent: #22c55e;
-  --accent-2: #3b82f6;
-  --muted: #64748b;
+  --panel-bg: #2c1810;
+  --panel-fg: #F4E4BC;
+  --accent: #CD853F;
+  --accent-2: #A0522D;
+  --muted: #8B7355;
   --danger: #ef4444;
-  --ghost: #1f2937;
-  --grid1-bg: #1f7a3a;
-  --grid2-bg: #0b132b;
-  --wall: #0b0f1a;
-  --path: #00d4ff;
-  --path-glow: #00a8cc;
+  --ghost: #1a0f0a;
+  --grid1-bg: #2c1810;
+  --grid2-bg: #1a0f0a;
+  --wall: #0f0704;
+  --path: #CD853F;
+  --path-glow: #A0522D;
   --current: #ef4444;
   --checkpoint: #f59e0b;
   --treasure: #f97316;
@@ -24,7 +24,8 @@
 body {
   margin: 0;
   font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Helvetica, Arial, Apple Color Emoji, Segoe UI Emoji;
-  background: #0b0f1a;
+  background: linear-gradient(135deg, #2c1810 0%, #1a0f0a 50%, #0f0704 100%);
+  background-attachment: fixed;
   color: var(--panel-fg);
 }
 
@@ -54,8 +55,8 @@ body {
 }
 
 .statusBlock {
-  background: #0b1020;
-  border: 1px solid #1f2937;
+  background: #3e2117;
+  border: 1px solid #3e2117;
   padding: 10px;
   border-radius: 8px;
 }
@@ -80,22 +81,22 @@ body {
 button {
   padding: 10px 12px;
   border-radius: 8px;
-  border: 1px solid #1f2937;
-  background: #111827;
+  border: 1px solid #3e2117;
+  background: #9a8b2c;
   color: var(--panel-fg);
   cursor: pointer;
   font-weight: 600;
 }
 
-button:hover { background: #0b1320; }
+button:hover { background: #cbb73a; }
 
 button.accent {
-  background: var(--accent);
-  color: #041208;
-  border-color: #1e7a3a;
+  background: #334a1b;
+  color: var(--panel-fg);
+  border-color: #3e2117;
 }
 
-button.accent:hover { opacity: 0.9; }
+button.accent:hover { background: #556b2f; }
 
 button.ghost {
   background: var(--ghost);
@@ -103,8 +104,8 @@ button.ghost {
 
 .legendContainer {
   margin-top: 14px;
-  background: #0b1020;
-  border: 1px solid #1f2937;
+  background: #3e2117;
+  border: 1px solid #3e2117;
   border-radius: 8px;
   padding: 10px 12px;
 }
@@ -170,7 +171,7 @@ button.ghost {
   height: 90vmin;
   max-width: 100%;
   max-height: 90vh;
-  border: 2px solid #1f2937;
+  border: 2px solid #3e2117;
   border-radius: 8px;
   background: #0b0f1a;
 }
@@ -183,7 +184,7 @@ button.ghost {
   background: var(--grid-bg);
   width: 90vmin;
   height: 90vmin;
-  border: 2px solid #1f2937;
+  border: 2px solid #3e2117;
   position: relative;
 }
 
@@ -570,4 +571,187 @@ button.ghost {
 .grid-container[style*="--grid-size: 40"] .grid-cell .icon-fallback {
   width: 60%;
   height: 60%;
+}
+
+/* Styles pour la page d'accueil médiévale */
+.welcome-page {
+  background: linear-gradient(135deg, #2c1810 0%, #1a0f0a 50%, #0f0704 100%);
+  background-attachment: fixed;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Cinzel', serif;
+  overflow: hidden;
+  position: relative;
+}
+
+.welcome-page::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: 
+    radial-gradient(circle at 20% 80%, rgba(120, 80, 40, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(80, 60, 30, 0.1) 0%, transparent 50%);
+  pointer-events: none;
+}
+
+.welcome-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 20px;
+  position: relative;
+  z-index: 1;
+}
+
+.scroll-container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  animation: fadeInUp 1.5s ease-out;
+}
+
+.quest-scroll {
+  max-width: 90vw;
+  max-height: 70vh;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 10px 30px rgba(0, 0, 0, 0.5));
+  transition: transform 0.3s ease;
+}
+
+/* .quest-scroll:hover {
+  transform: scale(1.02);
+} */
+
+.quest-button-container {
+  margin-top: 30px;
+  display: flex;
+  justify-content: center;
+}
+
+.medieval-button {
+  background: linear-gradient(145deg, #8B4513, #A0522D);
+  border: 3px solid #654321;
+  border-radius: 15px;
+  padding: 15px 30px;
+  font-family: 'Cinzel', serif;
+  font-size: 18px;
+  font-weight: 600;
+  color: #F4E4BC;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  box-shadow: 
+    0 6px 12px rgba(0, 0, 0, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.3);
+  min-width: 250px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.medieval-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s ease;
+}
+
+.medieval-button:hover {
+  background: linear-gradient(145deg, #A0522D, #CD853F);
+  border-color: #8B4513;
+  transform: translateY(-2px);
+  box-shadow: 
+    0 8px 16px rgba(0, 0, 0, 0.5),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.2);
+}
+
+.medieval-button:hover::before {
+  left: 100%;
+}
+
+.medieval-button:active {
+  transform: translateY(0);
+  box-shadow: 
+    0 4px 8px rgba(0, 0, 0, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.4);
+}
+
+.button-text {
+  font-size: 18px;
+  letter-spacing: 1px;
+}
+
+.button-decoration {
+  font-size: 20px;
+  filter: drop-shadow(1px 1px 2px rgba(0, 0, 0, 0.5));
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive design pour la page d'accueil */
+@media (max-width: 768px) {
+  .quest-scroll {
+    max-width: 95vw;
+    max-height: 60vh;
+  }
+  
+  .medieval-button {
+    font-size: 16px;
+    padding: 12px 25px;
+    min-width: 200px;
+  }
+  
+  .button-text {
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .quest-scroll {
+    max-width: 98vw;
+    max-height: 50vh;
+  }
+  
+  .medieval-button {
+    font-size: 14px;
+    padding: 10px 20px;
+    min-width: 180px;
+  }
+  
+  .button-text {
+    font-size: 14px;
+  }
+  
+  .button-decoration {
+    font-size: 16px;
+  }
 }

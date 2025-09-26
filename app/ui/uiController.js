@@ -5,7 +5,17 @@ import { renderGrid } from '../render/htmlRenderer.js';
 
 // Cible suivante: check-points puis porte (grille 1), check-points puis sortie (grille 2).
 export function getNextTargetAndType(state) {
-  // D'abord les checkpoints (grille 1 et 2), puis porte (grille 1) ou sortie (grille 2)
+  // Pour la grille 2 : on doit récupérer les checkpoints dans l'ordre AVANT le trésor
+  if (state.currentGridType === 'grid2') {
+    // Si on n'a pas encore atteint le checkpoint trésor (index 2)
+    if (state.nextTargetIndex < state.checkpointsList.length) {
+      return { target: state.checkpointsList[state.nextTargetIndex], type: 'checkpoint' };
+    }
+    // Après tous les checkpoints, on va à la sortie
+    return { target: state.exitPosition, type: 'exit' };
+  }
+  
+  // Pour la grille 1 : logique existante
   if (state.nextTargetIndex < state.checkpointsList.length) {
     return { target: state.checkpointsList[state.nextTargetIndex], type: 'checkpoint' };
   }
@@ -15,7 +25,7 @@ export function getNextTargetAndType(state) {
   return { target: state.exitPosition, type: 'exit' };
 }
 
-// Met à jour labels (grille, étape sur 3/4, cible) selon l’état courant.
+// Met à jour labels (grille, étape sur 3/4, cible) selon l'état courant.
 export function updateStatusLabels(state, domRefs) {
   const { gridTypeLabel, stepLabel, targetLabel } = domRefs;
   
@@ -52,8 +62,12 @@ export function updateStatusLabels(state, domRefs) {
       }
     } else {
       if (nextTargetInfo.type === 'checkpoint') {
-        const isTreasure = state.nextTargetIndex === state.treasureCheckpointIndex;
-        domRefs.targetLabel.textContent = isTreasure ? 'Trésor' : 'Point ' + state.labelsForGridTwo[state.nextTargetIndex];
+        // Affichage spécial pour le trésor (toujours le 3ème checkpoint)
+        if (state.nextTargetIndex === 2) {
+          domRefs.targetLabel.textContent = 'Trésor (Point C)';
+        } else {
+          domRefs.targetLabel.textContent = 'Point ' + state.labelsForGridTwo[state.nextTargetIndex];
+        }
       } else {
         domRefs.targetLabel.textContent = 'Sortie';
       }
@@ -120,7 +134,7 @@ export async function resetAll(state, gridContainer, gridCanvasContext, domRefs)
 // Modifier la fonction d'initialisation pour être asynchrone
 export async function switchToGridOne() {
   await initializeGridOne(window.gameState);
-  updateGridTypeLabel();
+  // updateGridTypeLabel();
   renderGrid();
 }
 
@@ -128,7 +142,7 @@ document.addEventListener('DOMContentLoaded', async function() {
   // Attendre que main.js ait initialisé gameState
   if (window.gameState) {
     await initializeGridOne(window.gameState);
-    updateGridTypeLabel();
+    // updateGridTypeLabel();
     renderGrid();
   }
 });

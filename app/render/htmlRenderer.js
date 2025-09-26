@@ -110,7 +110,8 @@ function addSpecialElements(cell, x, y, state) {
   // Checkpoints
   state.checkpointsList.forEach((checkpoint, index) => {
     if (checkpoint.x === x && checkpoint.y === y) {
-      const isTreasure = state.currentGridType === 'grid2' && index === state.treasureCheckpointIndex;
+      // Pour la grille 2, le trésor est TOUJOURS le 3ème checkpoint (index 2)
+      const isTreasure = state.currentGridType === 'grid2' && index === 2;
       
       if (isTreasure) {
         const marker = createIcon('mdi:treasure-chest', 'treasure-icon', '💰');

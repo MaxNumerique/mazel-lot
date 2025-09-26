@@ -127,11 +127,9 @@ export function generateCheckpoints(state, count, exclusionSet) {
   }
 }
 
-// Helper: détermine la porte (grille 1) en évitant checkpoints et position courante.
 export function pickDoorPosition(state) {
-  const exclusionSet = new Set(state.checkpointsList.map(p => p.x + ':' + p.y));
-  exclusionSet.add(state.currentPosition.x + ':' + state.currentPosition.y);
-  state.doorPosition = getRandomWalkablePosition(state.walkableMatrix, exclusionSet);
+  // Position fixe pour la clé aux coordonnées (56, 15)
+  state.doorPosition = { x: 56, y: 12 };
 }
 
 // Fonction modifiée pour créer une matrice avec les zones d'eau comme murs
@@ -259,5 +257,6 @@ export function initializeGridTwo(state) {
   exclusionSet.add(state.exitPosition.x + ':' + state.exitPosition.y);
   generateCheckpoints(state, 3, exclusionSet);
 
-  state.treasureCheckpointIndex = getRandomInteger(0, 2);
+  // Le trésor est TOUJOURS le 3ème checkpoint (index 2)
+  state.treasureCheckpointIndex = 2;
 }

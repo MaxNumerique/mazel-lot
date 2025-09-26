@@ -34,8 +34,8 @@ computeSegmentButton.addEventListener('click', () => {
 confirmSegmentButton.addEventListener('click', () => {
   confirmSegmentAndAdvance(state, gridContainer, null, domRefs);
 });
-resetAllButton.addEventListener('click', async () => { // Ajouter async
-  await resetAll(state, gridContainer, null, domRefs); // Ajouter await
+resetAllButton.addEventListener('click', async () => { 
+  await resetAll(state, gridContainer, null, domRefs);
 });
 
 window.gameState = state;

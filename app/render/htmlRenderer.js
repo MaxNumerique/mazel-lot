@@ -1,11 +1,11 @@
 import {
   gridOneBackgroundColor,
   gridTwoBackgroundColor,
-  wallCellColor,
-  openCellColor,
-  pathColor,
-  currentPositionColor,
-  exitColor,
+  // wallCellColor,
+  // openCellColor,
+  // pathColor,
+  // currentPositionColor,
+  // exitColor,
 } from '../config/constants.js';
 
 export function createGridContainer() {
@@ -49,10 +49,8 @@ export function renderGrid(state, container) {
       } else {
         cell.classList.add('walkable');
       }
-      
       // Ajouter les éléments spéciaux
       addSpecialElements(cell, x, y, state);
-      
       container.appendChild(cell);
     }
   }
@@ -120,7 +118,7 @@ function addSpecialElements(cell, x, y, state) {
         // Utiliser différentes icônes pour les waypoints
         const waypointIcons = [
           'mdi:alpha-a-circle',
-          'mdi:alpha-b-circle', 
+          'mdi:alpha-b-circle',
           'mdi:alpha-c-circle'
         ];
         const fallbackLabels = ['A', 'B', 'C'];
@@ -218,7 +216,6 @@ function drawPath(container, path, gridSize) {
     line.setAttribute('stroke-linecap', 'round');
     line.setAttribute('filter', 'url(#neon-glow)');
     line.classList.add('path-line');
-    
     svg.appendChild(line);
   }
   

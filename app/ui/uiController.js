@@ -1,0 +1,148 @@
+import { gridTypeOneName, gridTypeTwoName } from '../config/constants.js';
+import { performAStarSearch } from '/algo/astar.js';
+import { initializeGridOne, initializeGridTwo, pickDoorPosition } from '../model/state.js';
+import { renderGrid } from '../render/htmlRenderer.js';
+
+// Cible suivante: check-points puis porte (grille 1), check-points puis sortie (grille 2).
+export function getNextTargetAndType(state) {
+  // Pour la grille 2 : on doit récupérer les checkpoints dans l'ordre AVANT le trésor
+  if (state.currentGridType === 'grid2') {
+    // Si on n'a pas encore atteint le checkpoint trésor (index 2)
+    if (state.nextTargetIndex < state.checkpointsList.length) {
+      return { target: state.checkpointsList[state.nextTargetIndex], type: 'checkpoint' };
+    }
+    // Après tous les checkpoints, on va à la sortie
+    return { target: state.exitPosition, type: 'exit' };
+  }
+  
+  // Pour la grille 1 : logique existante
+  if (state.nextTargetIndex < state.checkpointsList.length) {
+    return { target: state.checkpointsList[state.nextTargetIndex], type: 'checkpoint' };
+  }
+  if (state.currentGridType === 'grid1') {
+    return state.doorPosition ? { target: state.doorPosition, type: 'door' } : { target: null, type: null };
+  }
+  return { target: state.exitPosition, type: 'exit' };
+}
+
+// Met à jour labels (grille, étape sur 3/4, cible) selon l'état courant.
+export function updateStatusLabels(state, domRefs) {
+  const { gridTypeLabel, stepLabel, targetLabel } = domRefs;
+  
+  // Mise à jour du type de grille avec style spécial pour Kaamelott
+  if (state.currentGridType === 'grid1') {
+    gridTypeLabel.textContent = 'Kaamelott';
+    gridTypeLabel.classList.add('status-kaamelott');
+  } else {
+    gridTypeLabel.textContent = 'Labyrinthe';
+    gridTypeLabel.classList.remove('status-kaamelott');
+  }
+  
+  const totalSegments =
+    state.currentGridType === 'grid1'
+      ? (state.doorPosition ? 4 : 3)
+      : 4;
+
+  const currentSegmentIndex =
+    state.currentGridType === 'grid1'
+      ? Math.min(state.nextTargetIndex + (state.doorPosition ? 1 : 0), totalSegments)
+      : Math.min(state.nextTargetIndex + 1, totalSegments);
+
+  domRefs.stepLabel.textContent = currentSegmentIndex + ' / ' + totalSegments;
+
+  const nextTargetInfo = getNextTargetAndType(state);
+  if (!nextTargetInfo.target) {
+    domRefs.targetLabel.textContent = '-';
+  } else {
+    if (state.currentGridType === 'grid1') {
+      if (nextTargetInfo.type === 'checkpoint') {
+        domRefs.targetLabel.textContent = 'Point ' + state.labelsForGridOne[state.nextTargetIndex];
+      } else if (nextTargetInfo.type === 'door') {
+        domRefs.targetLabel.textContent = 'Porte';
+      }
+    } else {
+      if (nextTargetInfo.type === 'checkpoint') {
+        // Affichage spécial pour le trésor (toujours le 3ème checkpoint)
+        if (state.nextTargetIndex === 2) {
+          domRefs.targetLabel.textContent = 'Trésor (Point C)';
+        } else {
+          domRefs.targetLabel.textContent = 'Point ' + state.labelsForGridTwo[state.nextTargetIndex];
+        }
+      } else {
+        domRefs.targetLabel.textContent = 'Sortie';
+      }
+    }
+  }
+}
+
+// Calcule le segment A* vers la cible courante, stocke le chemin et rafraîchit l'affichage.
+export function computeNextSegmentPath(state, gridContainer, gridCanvasContext, domRefs) {
+  const nextTargetInfo = getNextTargetAndType(state);
+  if (!nextTargetInfo.target) {
+    return;
+  }
+  const path = performAStarSearch(state.walkableMatrix, state.currentPosition, nextTargetInfo.target);
+  state.lastComputedPath = path;
+  state.lastComputedTargetType = nextTargetInfo.type;
+  renderGrid(state, gridContainer);
+  updateStatusLabels(state, domRefs); 
+}
+
+// Valide le segment: avance la position, gère l'apparition de la porte, passage grille1→grille2, fin de grille2→grille1.
+export function confirmSegmentAndAdvance(state, gridContainer, gridCanvasContext, domRefs) {
+  if (!state.lastComputedPath || state.lastComputedPath.length === 0) {
+    return;
+  }
+  const finalPoint = state.lastComputedPath[state.lastComputedPath.length - 1];
+  state.currentPosition = { x: finalPoint.x, y: finalPoint.y };
+
+  if (state.currentGridType === 'grid1') {
+    if (state.nextTargetIndex < state.checkpointsList.length) {
+      state.nextTargetIndex += 1;
+      if (state.nextTargetIndex === state.checkpointsList.length) {
+        // Porte après le dernier checkpoint, avec exclusions.
+        pickDoorPosition(state);
+      }
+    } else if (state.doorPosition) {
+      if (finalPoint.x === state.doorPosition.x && finalPoint.y === state.doorPosition.y) {
+        initializeGridTwo(state);
+      }
+    }
+  } else {
+    if (state.nextTargetIndex < state.checkpointsList.length) {
+      state.nextTargetIndex += 1;
+    } else {
+      if (finalPoint.x === state.exitPosition.x && finalPoint.y === state.exitPosition.y) {
+        initializeGridOne(state);
+      }
+    }
+  }
+
+  state.lastComputedPath = [];
+  state.lastComputedTargetType = null;
+  renderGrid(state, gridContainer);
+  updateStatusLabels(state, domRefs);
+}
+
+// Réinitialise l'ensemble de la simulation sur la grille 1.
+export async function resetAll(state, gridContainer, gridCanvasContext, domRefs) {
+  await initializeGridOne(state); // Ajouter await
+  renderGrid(state, gridContainer);
+  updateStatusLabels(state, domRefs);
+}
+
+// Modifier la fonction d'initialisation pour être asynchrone
+export async function switchToGridOne() {
+  await initializeGridOne(window.gameState);
+  // updateGridTypeLabel();
+  renderGrid();
+}
+
+document.addEventListener('DOMContentLoaded', async function() {
+  // Attendre que main.js ait initialisé gameState
+  if (window.gameState) {
+    await initializeGridOne(window.gameState);
+    // updateGridTypeLabel();
+    renderGrid();
+  }
+});

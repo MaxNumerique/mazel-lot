@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <title>La Quête des Gueux - Mazel-lot</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="/styles.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="welcome-page">
+  <div class="welcome-container">
+    <div class="scroll-container">
+      <img src="/images/quete_des_gueux.png" alt="La Quête des Gueux" class="quest-scroll" />
+      <div class="quest-button-container">
+        <button id="startQuestButton" class="medieval-button">
+          <span class="button-text">Commencer la Quête</span>
+          <span class="button-decoration">⚔️</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById('startQuestButton').addEventListener('click', function() {
+      window.location.href = '/game.html';
+    });
+  </script>
+</body>
+</html>

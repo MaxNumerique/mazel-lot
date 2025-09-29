@@ -1,0 +1,799 @@
+:root {
+  --panel-bg: #2c1810;
+  --panel-fg: #F4E4BC;
+  --accent: #CD853F;
+  --accent-2: #A0522D;
+  --muted: #8B7355;
+  --danger: #ef4444;
+  --ghost: #1a0f0a;
+  --grid1-bg: #2c1810;
+  --grid2-bg: #1a0f0a;
+  --wall: #0f0704;
+  --path: #CD853F;
+  --path-glow: #A0522D;
+  --current: #ef4444;
+  --checkpoint: #f59e0b;
+  --treasure: #f97316;
+  --door: #8b5cf6;
+  --exit: #22c55e;
+  --key: #fbbf24;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Helvetica, Arial, Apple Color Emoji, Segoe UI Emoji;
+  background: linear-gradient(135deg, #2c1810 0%, #1a0f0a 50%, #0f0704 100%);
+  background-attachment: fixed;
+  color: var(--panel-fg);
+}
+
+.layoutContainer {
+  display: grid;
+  grid-template-columns: 360px 1fr;
+  min-height: 100vh;
+}
+
+.controlPanel {
+  padding: 20px;
+  background: var(--panel-bg);
+  border-right: 1px solid #111827;
+}
+
+.controlPanel h1 {
+  margin: 0 0 16px 0;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.statusRow {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.statusBlock {
+  background: #3e2117;
+  border: 1px solid #3e2117;
+  padding: 10px;
+  border-radius: 8px;
+}
+
+.statusLabel {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.statusValue {
+  font-size: 16px;
+  font-weight: 700;
+  margin-top: 6px;
+}
+
+.buttonRow {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+button {
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid #3e2117;
+  background: #9a8b2c;
+  color: var(--panel-fg);
+  cursor: pointer;
+  font-weight: 600;
+}
+
+button:hover { background: #cbb73a; }
+
+button.accent {
+  background: #334a1b;
+  color: var(--panel-fg);
+  border-color: #3e2117;
+}
+
+button.accent:hover { background: #556b2f; }
+
+button.ghost {
+  background: var(--ghost);
+}
+
+.legendContainer {
+  margin-top: 14px;
+  background: #3e2117;
+  border: 1px solid #3e2117;
+  border-radius: 8px;
+  padding: 10px 12px;
+}
+
+.legendTitle {
+  font-size: 13px;
+  color: var(--muted);
+  margin-bottom: 6px;
+}
+
+.legendList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 8px;
+}
+
+.legendBox {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  border-radius: 3px;
+  margin-right: 8px;
+  vertical-align: middle;
+  border: 1px solid #111827;
+}
+
+.legend-icon {
+  width: 16px;
+  height: 16px;
+  margin-right: 8px;
+  vertical-align: middle;
+}
+
+.legend-current { color: var(--current); }
+.legend-checkpoint { color: var(--checkpoint); }
+.legend-treasure { color: var(--treasure); }
+.legend-key { color: var(--key); }
+.legend-door { color: var(--exit); }
+.legend-exit { color: var(--exit); }
+
+.legendCurrent { background: var(--current); }
+.legendCheckpoint { background: var(--checkpoint); }
+.legendTreasure { background: var(--treasure); }
+.legendDoor { background: var(--door); }
+.legendExit { background: var(--exit); }
+.legendPath { 
+  background: #00d4ff;
+  box-shadow: 0 0 8px #00d4ff;
+  border-radius: 50%;
+}
+
+.canvasPanel {
+  background-color: var(--panel-bg);
+  display: grid;
+  place-items: center;
+  padding: 12px;
+}
+
+#gridCanvas {
+  width: 90vmin;
+  height: 90vmin;
+  max-width: 100%;
+  max-height: 90vh;
+  border: 2px solid #3e2117;
+  border-radius: 8px;
+  background: #0b0f1a;
+}
+
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(var(--grid-size), 1fr);
+  grid-template-rows: repeat(var(--grid-size), 1fr);
+  gap: 1px;
+  background: var(--grid-bg);
+  width: 90vmin;
+  height: 90vmin;
+  border: 2px solid #3e2117;
+  position: relative;
+}
+
+/* Ajustement spécial pour la grille Kaamelott */
+.grid-container.kaamelott-background {
+  background-image: url('/images/Kaamelott.png');
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  /* border: 3px solid #8b5a2b; */
+  border-radius: 12px;
+  /* box-shadow: 0 0 20px rgba(139, 90, 43, 0.3); */
+  background-color: #2d4a3a;
+  /* Optimisation pour petits écrans */
+  width: min(90vw, 80vh * 16/9); /* Plus large sur petits écrans */
+  height: min(80vh, 95vw * 9/16); /* Hauteur adaptée */
+  max-width: 1200px; /* Limite maximale pour grands écrans */
+  max-height: 670px; /* Limite maximale pour grands écrans */
+  /* Centrage pour tous les écrans */
+  margin: 0 auto;
+}
+
+/* Ajustements spécifiques pour très petits écrans */
+@media (max-width: 768px) {
+  .grid-container.kaamelott-background {
+    width: 98vw;
+    height: calc(98vw * 9/16);
+    max-width: none;
+    max-height: 70vh;
+    border-width: 2px;
+    border-radius: 8px;
+  }
+}
+
+/* Ajustements pour écrans moyens */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .grid-container.kaamelott-background {
+    width: min(90vw, 75vh * 16/9);
+    height: min(75vh, 90vw * 9/16);
+    max-width: 700px;
+    max-height: 394px;
+  }
+}
+
+/* Cellules encore plus transparentes pour mieux voir la carte */
+.grid-container.kaamelott-background .grid-cell.walkable {
+  background: rgba(31, 122, 58, 0.05);
+  /* Opacité très réduite pour une meilleure visibilité de la carte */
+}
+
+.grid-cell {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 0;
+  /* Suppression de la transition pour améliorer les performances */
+}
+
+.grid-cell.walkable {
+  background: #2e3441;
+}
+
+/* Cellules transparentes pour la grille Kaamelott */
+.grid-container.kaamelott-background .grid-cell.walkable {
+  background: rgba(31, 122, 58, 0.2);
+  /* Réduction de l'opacité et suppression du backdrop-filter pour de meilleures performances */
+  border: none;
+}
+
+/* Suppression complète de l'effet hover pour éviter les lags */
+/* .grid-container.kaamelott-background .grid-cell.walkable:hover - SUPPRIMÉ */
+
+.grid-cell.wall {
+  background: var(--wall);
+  border: 1px solid rgba(255,255,255,0.1);
+}
+
+/* Texture spécifique pour les murs de la Grid 2 (labyrinthe) */
+.grid-container:not(.kaamelott-background) .grid-cell.wall {
+  background: 
+    /* Texture de pierre avec des motifs */
+    radial-gradient(circle at 20% 20%, rgba(139, 92, 63, 0.3) 1px, transparent 1px),
+    radial-gradient(circle at 80% 80%, rgba(205, 133, 63, 0.2) 1px, transparent 1px),
+    radial-gradient(circle at 40% 70%, rgba(101, 67, 33, 0.4) 1px, transparent 1px),
+    radial-gradient(circle at 70% 30%, rgba(160, 82, 45, 0.3) 1px, transparent 1px),
+    /* Dégradé de base pour l'effet de pierre */
+    linear-gradient(135deg, 
+      var(--wall) 0%, 
+      #1a1108 25%, 
+      #0a0603 50%, 
+      var(--wall) 75%, 
+      #1f1409 100%
+    );
+  background-size: 8px 8px, 12px 12px, 6px 6px, 10px 10px, 100% 100%;
+  border: 1px solid rgba(139, 92, 63, 0.4);
+  box-shadow: 
+    inset 1px 1px 2px rgba(205, 133, 63, 0.1),
+    inset -1px -1px 2px rgba(0, 0, 0, 0.3);
+  position: relative;
+}
+
+/* Effet de relief supplémentaire pour les murs texturés */
+.grid-container:not(.kaamelott-background) .grid-cell.wall::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: 
+    repeating-linear-gradient(
+      45deg,
+      transparent,
+      transparent 2px,
+      rgba(139, 92, 63, 0.05) 2px,
+      rgba(139, 92, 63, 0.05) 4px
+    );
+  pointer-events: none;
+}
+
+.path-overlay {
+  overflow: visible;
+}
+
+.path-line {
+  animation: neon-flow 2s ease-in-out infinite alternate;
+}
+
+.path-start-point {
+  animation: start-pulse 1.5s ease-in-out infinite alternate;
+}
+
+.path-end-point {
+  animation: end-pulse 1.5s ease-in-out infinite alternate;
+}
+
+/* Animations pour les traits néon */
+@keyframes neon-flow {
+  0% {
+    stroke: #00d4ff;
+    stroke-width: 3;
+    filter: drop-shadow(0 0 5px #00d4ff) drop-shadow(0 0 10px #00d4ff);
+  }
+  100% {
+    stroke: #00ffff;
+    stroke-width: 4;
+    filter: drop-shadow(0 0 8px #00ffff) drop-shadow(0 0 15px #00ffff) drop-shadow(0 0 20px #00d4ff);
+  }
+}
+
+@keyframes start-pulse {
+  0% {
+    fill: #00ff88;
+    r: 4;
+    filter: drop-shadow(0 0 5px #00ff88);
+  }
+  100% {
+    fill: #00ffaa;
+    r: 6;
+    filter: drop-shadow(0 0 10px #00ff88) drop-shadow(0 0 15px #00ff88);
+  }
+}
+
+@keyframes end-pulse {
+  0% {
+    fill: #ff4444;
+    r: 4;
+    filter: drop-shadow(0 0 5px #ff4444);
+  }
+  100% {
+    fill: #ff6666;
+    r: 6;
+    filter: drop-shadow(0 0 10px #ff4444) drop-shadow(0 0 15px #ff4444);
+  }
+}
+
+/* Styles pour les icônes Iconify */
+.current-position-icon {
+  width: 70%;
+  height: 70%;
+  color: var(--current);
+  filter: drop-shadow(0 0 8px rgba(239, 68, 68, 0.6));
+  z-index: 10;
+}
+
+.checkpoint-icon {
+  width: 80%;
+  height: 80%;
+  color: var(--checkpoint);
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.4));
+  z-index: 5;
+}
+
+.treasure-icon {
+  width: 85%;
+  height: 85%;
+  color: var(--treasure);
+  filter: drop-shadow(0 2px 6px rgba(0,0,0,0.4));
+  z-index: 5;
+}
+
+.key-icon {
+  width: 75%;
+  height: 75%;
+  color: var(--key);
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.4));
+  z-index: 5;
+}
+
+.exit-icon {
+  width: 85%;
+  height: 85%;
+  color: var(--exit);
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.4));
+  z-index: 5;
+}
+
+/* Styles pour les fallbacks */
+.icon-fallback {
+  width: 70%;
+  height: 70%;
+  border-radius: 50%;
+  font-size: 0.8em;
+  z-index: 5;
+}
+
+.current-position-icon.icon-fallback {
+  background: var(--current);
+  color: white;
+}
+
+.checkpoint-icon.icon-fallback {
+  background: var(--checkpoint);
+  color: black;
+}
+
+.treasure-icon.icon-fallback {
+  background: var(--treasure);
+  color: white;
+  font-size: 1em;
+}
+
+.key-icon.icon-fallback {
+  background: var(--key);
+  color: black;
+  font-size: 1em;
+}
+
+.exit-icon.icon-fallback {
+  background: var(--exit);
+  color: white;
+  font-size: 1em;
+}
+
+/* Responsive pour différentes tailles de grille - Ajout pour 24x24 */
+.grid-container[style*="--grid-size: 24"] .grid-cell iconify-icon,
+.grid-container[style*="--grid-size: 24"] .grid-cell .icon-fallback {
+  width: 70%;
+  height: 70%;
+}
+
+/* Responsive pour les traits SVG - Ajout pour 24x24 */
+.grid-container[style*="--grid-size: 24"] .path-line {
+  stroke-width: 2.5;
+}
+
+.grid-container[style*="--grid-size: 10"] .grid-cell iconify-icon,
+.grid-container[style*="--grid-size: 10"] .grid-cell .icon-fallback {
+  width: 90%;
+  height: 90%;
+}
+
+.grid-container[style*="--grid-size: 20"] .grid-cell iconify-icon,
+.grid-container[style*="--grid-size: 20"] .grid-cell .icon-fallback {
+  width: 75%;
+  height: 75%;
+}
+
+.grid-container[style*="--grid-size: 30"] .grid-cell iconify-icon,
+.grid-container[style*="--grid-size: 30"] .grid-cell .icon-fallback {
+  width: 65%;
+  height: 65%;
+}
+
+.grid-container[style*="--grid-size: 40"] .grid-cell iconify-icon,
+.grid-container[style*="--grid-size: 40"] .grid-cell .icon-fallback {
+  width: 60%;
+  height: 60%;
+}
+
+/* Responsive pour les traits SVG */
+.grid-container[style*="--grid-size: 10"] .path-line {
+  stroke-width: 4;
+}
+
+.grid-container[style*="--grid-size: 20"] .path-line {
+  stroke-width: 3;
+}
+
+.grid-container[style*="--grid-size: 30"] .path-line {
+  stroke-width: 2;
+}
+
+.grid-container[style*="--grid-size: 40"] .path-line {
+  stroke-width: 1.5;
+}
+
+/* Animations pour les icônes */
+.current-position-icon {
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    filter: drop-shadow(0 0 8px rgba(239, 68, 68, 0.6));
+  }
+  50% {
+    filter: drop-shadow(0 0 12px rgba(239, 68, 68, 0.9));
+  }
+}
+
+.treasure-icon {
+  animation: treasure-glow 3s ease-in-out infinite;
+}
+
+@keyframes treasure-glow {
+  0%, 100% {
+    filter: drop-shadow(0 2px 6px rgba(0,0,0,0.4));
+  }
+  50% {
+    filter: drop-shadow(0 2px 8px rgba(249, 115, 22, 0.6));
+  }
+}
+
+/* Animations pour les fallbacks */
+.current-position-icon.icon-fallback {
+  animation: pulse-fallback 2s infinite;
+}
+
+@keyframes pulse-fallback {
+  0%, 100% {
+    box-shadow: 0 0 8px rgba(239, 68, 68, 0.6);
+  }
+  50% {
+    box-shadow: 0 0 12px rgba(239, 68, 68, 0.9);
+  }
+}
+
+.treasure-icon.icon-fallback {
+  animation: treasure-glow-fallback 3s ease-in-out infinite;
+}
+
+@keyframes treasure-glow-fallback {
+  0%, 100% {
+    box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+  }
+  50% {
+    box-shadow: 0 2px 8px rgba(249, 115, 22, 0.6);
+  }
+}
+
+/* Amélioration des icônes pour la grille Kaamelott - Version optimisée */
+.grid-container.kaamelott-background .current-position-icon {
+  filter: drop-shadow(0 0 8px rgba(239, 68, 68, 0.8));
+  color: #ff6b6b;
+}
+
+.grid-container.kaamelott-background .checkpoint-icon {
+  filter: drop-shadow(0 0 6px rgba(245, 158, 11, 0.8));
+  color: #fbbf24;
+}
+
+.grid-container.kaamelott-background .treasure-icon {
+  filter: drop-shadow(0 0 8px rgba(249, 115, 22, 0.9));
+  color: #f59e0b;
+}
+
+.grid-container.kaamelott-background .key-icon {
+  filter: drop-shadow(0 0 6px rgba(251, 191, 36, 0.8));
+  color: #fcd34d;
+}
+
+.grid-container.kaamelott-background .exit-icon {
+  filter: drop-shadow(0 0 8px rgba(34, 197, 94, 0.8));
+  color: #10b981;
+}
+
+/* Amélioration du chemin pour la grille Kaamelott - Version optimisée */
+.grid-container.kaamelott-background .path-line {
+  stroke: #00ffff;
+  stroke-width: 4;
+  filter: drop-shadow(0 0 8px #00ffff);
+}
+
+.grid-container.kaamelott-background .path-start-point {
+  fill: #00ff88;
+  filter: drop-shadow(0 0 8px #00ff88);
+}
+
+.grid-container.kaamelott-background .path-end-point {
+  fill: #ff4444;
+  filter: drop-shadow(0 0 8px #ff4444);
+}
+
+/* Responsive pour différentes tailles de grille */
+.grid-container[style*="--grid-size: 10"] .grid-cell iconify-icon,
+.grid-container[style*="--grid-size: 10"] .grid-cell .icon-fallback {
+  width: 90%;
+  height: 90%;
+}
+
+.grid-container[style*="--grid-size: 20"] .grid-cell iconify-icon,
+.grid-container[style*="--grid-size: 20"] .grid-cell .icon-fallback {
+  width: 75%;
+  height: 75%;
+}
+
+.grid-container[style*="--grid-size: 30"] .grid-cell iconify-icon,
+.grid-container[style*="--grid-size: 30"] .grid-cell .icon-fallback {
+  width: 65%;
+  height: 65%;
+}
+
+.grid-container[style*="--grid-size: 40"] .grid-cell iconify-icon,
+.grid-container[style*="--grid-size: 40"] .grid-cell .icon-fallback {
+  width: 60%;
+  height: 60%;
+}
+
+/* Styles pour la page d'accueil médiévale */
+.welcome-page {
+  background: linear-gradient(135deg, #2c1810 0%, #1a0f0a 50%, #0f0704 100%);
+  background-attachment: fixed;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Cinzel', serif;
+  overflow: hidden;
+  position: relative;
+}
+
+.welcome-page::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: 
+    radial-gradient(circle at 20% 80%, rgba(120, 80, 40, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(80, 60, 30, 0.1) 0%, transparent 50%);
+  pointer-events: none;
+}
+
+.welcome-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 20px;
+  position: relative;
+  z-index: 1;
+}
+
+.scroll-container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  animation: fadeInUp 1.5s ease-out;
+}
+
+.quest-scroll {
+  max-width: 90vw;
+  max-height: 70vh;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 10px 30px rgba(0, 0, 0, 0.5));
+  transition: transform 0.3s ease;
+}
+
+/* .quest-scroll:hover {
+  transform: scale(1.02);
+} */
+
+.quest-button-container {
+  margin-top: 30px;
+  display: flex;
+  justify-content: center;
+}
+
+.medieval-button {
+  background: linear-gradient(145deg, #8B4513, #A0522D);
+  border: 3px solid #654321;
+  border-radius: 15px;
+  padding: 15px 30px;
+  font-family: 'Cinzel', serif;
+  font-size: 18px;
+  font-weight: 600;
+  color: #F4E4BC;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  box-shadow: 
+    0 6px 12px rgba(0, 0, 0, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.3);
+  min-width: 250px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.medieval-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s ease;
+}
+
+.medieval-button:hover {
+  background: linear-gradient(145deg, #A0522D, #CD853F);
+  border-color: #8B4513;
+  transform: translateY(-2px);
+  box-shadow: 
+    0 8px 16px rgba(0, 0, 0, 0.5),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.2);
+}
+
+.medieval-button:hover::before {
+  left: 100%;
+}
+
+.medieval-button:active {
+  transform: translateY(0);
+  box-shadow: 
+    0 4px 8px rgba(0, 0, 0, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.4);
+}
+
+.button-text {
+  font-size: 18px;
+  letter-spacing: 1px;
+}
+
+.button-decoration {
+  font-size: 20px;
+  filter: drop-shadow(1px 1px 2px rgba(0, 0, 0, 0.5));
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive design pour la page d'accueil */
+@media (max-width: 768px) {
+  .quest-scroll {
+    max-width: 95vw;
+    max-height: 60vh;
+  }
+  
+  .medieval-button {
+    font-size: 16px;
+    padding: 12px 25px;
+    min-width: 200px;
+  }
+  
+  .button-text {
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .quest-scroll {
+    max-width: 98vw;
+    max-height: 50vh;
+  }
+  
+  .medieval-button {
+    font-size: 14px;
+    padding: 10px 20px;
+    min-width: 180px;
+  }
+  
+  .button-text {
+    font-size: 14px;
+  }
+  
+  .button-decoration {
+    font-size: 16px;
+  }
+}
